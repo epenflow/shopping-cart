@@ -29,11 +29,11 @@ const ShoppingContext = React.createContext<ShoppingContextType>({
 	isTotal: false,
 	isQuantity: false,
 	isEmpty: false,
-	addToCart: () => {},
-	removeFromCart: () => {},
-	emptyCart: () => {},
-	removeItem: () => {},
-	updatePrice: () => {},
+	addToCart: (): void => {},
+	removeFromCart: (): void => {},
+	emptyCart: (): void => {},
+	removeItem: (): void => {},
+	updatePrice: (): void => {},
 });
 interface ShoppingProviderProps {
 	children: React.ReactNode;
@@ -54,7 +54,7 @@ export const ShoppingProvider = ({ children }: ShoppingProviderProps) => {
 	const memoizeCart = React.useMemo(() => {
 		return !(!isQuantity || !isTotal);
 	}, [isQuantity, isTotal]);
-	React.useEffect(() => {
+	React.useEffect((): void => {
 		setEmpty(memoizeCart);
 	}, [memoizeCart]);
 
@@ -68,8 +68,10 @@ export const ShoppingProvider = ({ children }: ShoppingProviderProps) => {
 	 * @returns {void}
 	 */
 	function updatePrice(products: ProductType[]): void {
-		let total = 0;
-		products.forEach((product) => (total += product.total));
+		let total: number = 0;
+		products.forEach(
+			(product: ProductType): number => (total += product.total),
+		);
 		setTotal(total > 0);
 		dispatch({
 			type: 'UPDATE PRICE',
@@ -87,8 +89,10 @@ export const ShoppingProvider = ({ children }: ShoppingProviderProps) => {
 	 * @returns {void}
 	 */
 	function updateQuantity(products: ProductType[]): void {
-		let quantity = 0;
-		products.forEach((product) => (quantity += product.quantity));
+		let quantity: number = 0;
+		products.forEach(
+			(product: ProductType): number => (quantity += product.quantity),
+		);
 		setQuantity(quantity > 0);
 		dispatch({
 			type: 'UPDATE QUANTITY',
@@ -106,9 +110,9 @@ export const ShoppingProvider = ({ children }: ShoppingProviderProps) => {
 	 * @returns {void}
 	 */
 	function addToCart(product: ProductType): void {
-		const updateCart = [...state.product];
-		const cartIndex = state.product.findIndex(
-			(index) => index.id === product.id,
+		const updateCart: ProductType[] = [...state.product];
+		const cartIndex: number = state.product.findIndex(
+			(index: ProductType): boolean => index.id === product.id,
 		);
 		if (cartIndex < 0) {
 			updateCart.push({
@@ -142,8 +146,8 @@ export const ShoppingProvider = ({ children }: ShoppingProviderProps) => {
 	 * @returns {void}
 	 */
 	function removeFromCart(id: number): void {
-		const updateCart = state.product.filter(
-			(currentProduct) => currentProduct.id !== id,
+		const updateCart: ProductType[] = state.product.filter(
+			(currentProduct: ProductType): boolean => currentProduct.id !== id,
 		);
 		updatePrice(updateCart);
 		updateQuantity(updateCart);
@@ -163,16 +167,18 @@ export const ShoppingProvider = ({ children }: ShoppingProviderProps) => {
 	 * @returns{void}
 	 */
 	function removeItem(id: number): void {
-		const updateCart = [...state.product];
-		const cartIndex = updateCart.findIndex((index) => index.id === id);
+		const updateCart: ProductType[] = [...state.product];
+		const cartIndex: number = updateCart.findIndex(
+			(index: ProductType): boolean => index.id === id,
+		);
 		const updateItem = { ...updateCart[cartIndex] };
-		updateItem.quantity++;
+		updateItem.quantity--;
 		updateItem.total =
 			updateItem.quantity === 1
 				? updateItem.price
 				: updateItem.quantity * updateItem.price - updateItem.price;
 		if (updateItem.quantity <= 0) {
-			updateCart.slice(cartIndex, 1);
+			updateCart.splice(cartIndex, 1);
 		} else {
 			updateCart[cartIndex] = updateItem;
 		}
@@ -230,8 +236,9 @@ export const ShoppingProvider = ({ children }: ShoppingProviderProps) => {
 		</ShoppingContext.Provider>
 	);
 };
-export function useCart() {
-	const context = React.useContext<ShoppingContextType>(ShoppingContext);
+export function useCart(): ShoppingContextType {
+	const context: ShoppingContextType =
+		React.useContext<ShoppingContextType>(ShoppingContext);
 	if (typeof context === 'undefined') {
 		throw new Error('useCart must be used within ShoppingProvider');
 	}
