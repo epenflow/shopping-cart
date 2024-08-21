@@ -1,6 +1,6 @@
 # Shopping Provider Hooks
 
-This project is a Typescript port of the [shopping-cart](https://github.com/epenflow/shopping-cart/tree/main) project. its provides a set of React Hooks and context for managing a shopping cart. The functionality includes adding, removing, and updating items in the cart, as well as calculating the total price and quantity of items.
+This project is a Typescript port of the [shopping-cart](https://github.com/epenflow/shopping-cart/tree/main) project. it provides a set of React Hooks and context for managing a shopping cart. The functionality includes adding, removing, and updating items in the cart, as well as calculating the total price and quantity of items.
 
 # API Documentation
 
