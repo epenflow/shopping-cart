@@ -2,23 +2,7 @@
 
 This project is a Typescript port of the [shopping-cart](https://github.com/epenflow/shopping-cart/tree/main) project. ite provides a set of React Hooks and context for managing a shopping cart. The functionality includes adding, removing, and updating items in the cart, as well as calculating the total price and quantity of items.
 
-## Usage
-
-```tsx
-import React from 'react';
-import { ShoppingProvider } from './path/to/ShoppingProvider';
-const App: React.FC = () => {
-	return (
-		<ShoppingProvider>
-			<YourComponent />
-		</ShoppingProvider>
-	);
-};
-
-export default App;
-```
-
-# API
+# API Documentation
 
 ## Context Methods
 
@@ -41,3 +25,61 @@ export default App;
 | `product: ProductType[]` | The array of products in the cart.                         |
 | `total: number`          | The total price of the products in the cart.               |
 | `quantity: number`       | The total quantity of the products in the cart.            |
+
+## Example Usage
+
+### ShoppingProvider
+
+Wrap your application with the `ShoppingProvider` to provide the shopping context to your components.
+
+```tsx
+import { ShoppingProvider } from './context/shopping-provider';
+
+function App() {
+	return (
+		<ShoppingProvider>
+			<YourComponent />
+		</ShoppingProvider>
+	);
+}
+```
+
+## useCart Hook
+
+Use the `useCart` hook to access the shopping context in your components
+
+```tsx
+import { useCart } from './context/shopping-provider';
+
+function YourComponent() {
+	const {
+		addToCart,
+		removeFromCart,
+		emptyCart,
+		removeItem,
+		updatePrice,
+		isTotal,
+		isQuantity,
+		isEmpty,
+		totalItems,
+		product,
+		total,
+		quantity,
+	} = useCart();
+
+	// Example usage
+	const handleAddToCart = (product) => {
+		addToCart(product);
+	};
+
+	return (
+		<div>
+			<button onClick={() => handleAddToCart(product)}>
+				Add to Cart
+			</button>
+			<div>Total Items: {totalItems}</div>
+			<div>Total Price: {total}</div>
+		</div>
+	);
+}
+```
